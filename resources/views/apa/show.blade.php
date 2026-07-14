@@ -14,42 +14,26 @@
                 <p class="text-rosa font-medium">No se pudo procesar el documento.</p>
                 <p class="text-sm text-gray-500 mt-1">{{ $revision->error_mensaje }}</p>
             </div>
-        @else
-            @php $r = $revision->resultado_estructura; @endphp
-
+        @elseif (! $revision->resultado_citas || ! $revision->resultado_referencias)
             <div class="bg-white rounded-xl shadow p-6 mb-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Edición: {{ $r['edicion'] }}</p>
-                        <p class="text-2xl font-heading {{ $r['resumen']['aprobado'] ? 'text-verde' : 'text-rosa' }}">
-                            {{ $r['resumen']['aprobado'] ? 'Estructura correcta' : 'Se encontraron errores' }}
-                        </p>
-                    </div>
-                    <div class="text-right text-sm text-gray-500">
-                        <p>{{ $r['resumen']['errores'] }} errores</p>
-                        <p>{{ $r['resumen']['advertencias'] }} advertencias</p>
-                    </div>
-                </div>
+                <p class="text-naranja font-medium">Esta revisión es de una versión anterior del corrector.</p>
+                <p class="text-sm text-gray-500 mt-1">No tiene datos de citas ni referencias. Sube el documento de nuevo para obtener el análisis completo.</p>
             </div>
 
-            <div class="space-y-3">
-                @foreach ($r['checks'] as $check)
-                    @php
-                        $color = match($check['nivel']) {
-                            'ok' => 'border-verde bg-verde/5',
-                            'advertencia' => 'border-naranja bg-naranja/5',
-                            default => 'border-rosa bg-rosa/5',
-                        };
-                    @endphp
-                    <div class="border-l-4 {{ $color }} rounded-lg p-4">
-                        <p class="font-medium text-gray-800">{{ $check['nombre'] }}</p>
-                        <p class="text-sm text-gray-600 mt-0.5">{{ $check['mensaje'] }}</p>
-                    </div>
-                @endforeach
-            </div>
+            <h3 class="font-heading text-teal text-sm uppercase tracking-wide mb-2">Estructura del documento</h3>
+            @include('apa._apa_seccion', ['titulo' => 'Márgenes, interlineado, fuente y encabezado', 'resultado' => $revision->resultado_estructura])
+        @else
+            <h3 class="font-heading text-teal text-sm uppercase tracking-wide mb-2">Estructura del documento</h3>
+            @include('apa._apa_seccion', ['titulo' => 'Márgenes, interlineado, fuente y encabezado', 'resultado' => $revision->resultado_estructura])
+
+            <h3 class="font-heading text-teal text-sm uppercase tracking-wide mb-2">Citas en el texto</h3>
+            @include('apa._apa_seccion', ['titulo' => $revision->resultado_citas['total_citas_detectadas'] . ' citas detectadas', 'resultado' => $revision->resultado_citas])
+
+            <h3 class="font-heading text-teal text-sm uppercase tracking-wide mb-2">Lista de referencias</h3>
+            @include('apa._apa_seccion', ['titulo' => $revision->resultado_referencias['total_referencias_detectadas'] . ' referencias detectadas', 'resultado' => $revision->resultado_referencias])
         @endif
 
-        <a href="{{ route('apa.create') }}" class="inline-block mt-6 text-teal hover:underline text-sm">
+        <a href="{{ route('apa.create') }}" class="inline-block mt-2 text-teal hover:underline text-sm">
             &larr; Revisar otro documento
         </a>
     </div>

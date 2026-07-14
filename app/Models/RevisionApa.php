@@ -19,11 +19,15 @@ class RevisionApa extends Model
         'edicion_apa',
         'estado',
         'resultado_estructura',
+        'resultado_citas',
+        'resultado_referencias',
         'error_mensaje',
     ];
 
     protected $casts = [
         'resultado_estructura' => 'array',
+        'resultado_citas' => 'array',
+        'resultado_referencias' => 'array',
     ];
 
     public function user(): BelongsTo

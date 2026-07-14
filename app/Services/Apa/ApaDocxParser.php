@@ -48,6 +48,13 @@ class ApaDocxParser
         ];
     }
 
+    /**
+     * Intenta leer el interlineado por párrafo. Cuando el documento lo define
+     * a nivel de plantilla (estilo "Normal") en vez de por párrafo -- el caso
+     * más común en Word -- PhpWord no lo expone de forma confiable vía su API
+     * pública de lectura. En ese caso devuelve null y el check queda como
+     * advertencia manual en vez de fingir una detección poco confiable.
+     */
     protected function extraerInterlineadoPromedio(array $sections): ?float
     {
         $valores = [];
@@ -60,14 +67,14 @@ class ApaDocxParser
 
                 $estiloParrafo = $elemento->getParagraphStyle();
 
-                if (! $estiloParrafo || ! method_exists($estiloParrafo, 'getSpacing')) {
+                if (! is_object($estiloParrafo) || ! method_exists($estiloParrafo, 'getLineHeight')) {
                     continue;
                 }
 
-                $spacing = $estiloParrafo->getLineHeight();
+                $valor = $estiloParrafo->getLineHeight();
 
-                if ($spacing) {
-                    $valores[] = (float) $spacing;
+                if ($valor) {
+                    $valores[] = (float) $valor;
                 }
             }
         }
@@ -82,17 +89,16 @@ class ApaDocxParser
     protected function extraerFuentePredominante(array $sections, $phpWord): ?array
     {
         $conteo = [];
+        $tamanoPorDefecto = $phpWord->getDefaultFontSize();
 
         foreach ($sections as $seccion) {
-            $this->recolectarFuentes($seccion->getElements(), $conteo);
+            $this->recolectarFuentes($seccion->getElements(), $conteo, $tamanoPorDefecto);
         }
 
         if (empty($conteo)) {
-            // Fallback: fuente por defecto del documento (styles.xml)
             $nombre = $phpWord->getDefaultFontName();
-            $tamano = $phpWord->getDefaultFontSize();
 
-            return $nombre ? ['nombre' => $nombre, 'tamano' => $tamano] : null;
+            return $nombre ? ['nombre' => $nombre, 'tamano' => $tamanoPorDefecto] : null;
         }
 
         arsort($conteo);
@@ -102,20 +108,22 @@ class ApaDocxParser
         return ['nombre' => $nombre, 'tamano' => (float) $tamano];
     }
 
-    protected function recolectarFuentes(array $elementos, array &$conteo): void
+    protected function recolectarFuentes(array $elementos, array &$conteo, $tamanoPorDefecto): void
     {
         foreach ($elementos as $elemento) {
             if ($elemento instanceof Text) {
                 $estilo = $elemento->getFontStyle();
 
                 if (is_object($estilo) && $estilo->getName()) {
-                    $clave = $estilo->getName() . '|' . ($estilo->getSize() ?? '');
+                    // Si el run no trae tamaño explícito, usa el tamaño por defecto del documento
+                    $tamano = $estilo->getSize() ?: $tamanoPorDefecto;
+                    $clave = $estilo->getName() . '|' . $tamano;
                     $conteo[$clave] = ($conteo[$clave] ?? 0) + 1;
                 }
             }
 
             if ($elemento instanceof TextRun) {
-                $this->recolectarFuentes($elemento->getElements(), $conteo);
+                $this->recolectarFuentes($elemento->getElements(), $conteo, $tamanoPorDefecto);
             }
         }
     }

@@ -60,7 +60,11 @@ class ApaStructureValidator
     protected function validarInterlineado(?float $interlineado, array $reglas): array
     {
         if ($interlineado === null) {
-            return $this->check('Interlineado', 'advertencia', 'No se pudo determinar el interlineado; revísalo manualmente.');
+            return $this->check(
+                'Interlineado',
+                'advertencia',
+                'No se pudo verificar automáticamente (limitación conocida cuando el interlineado está definido a nivel de plantilla, no por párrafo). Revísalo manualmente: debe ser interlineado doble.'
+            );
         }
 
         $esperado = $reglas['interlineado'];
