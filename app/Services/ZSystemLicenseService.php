@@ -50,6 +50,10 @@ class ZSystemLicenseService
     {
         try {
             $response = Http::timeout((int) config('zsystem.timeout'))
+                ->acceptJson()
+                ->withHeaders([
+                    'X-API-KEY' => config('zsystem.api_key'),
+                ])
                 ->post(
                     rtrim(config('zsystem.platform_url'), '/') . '/api/v1/license/validate',
                     ['license_key' => $licenseKey]
@@ -69,7 +73,10 @@ class ZSystemLicenseService
             }
 
             Log::warning('ZSystemLicenseService: licencia rechazada por la plataforma', [
-                'message' => $body['message'] ?? 'sin mensaje',
+                'status' => $response->status(),
+                'body' => $body ?? $response->body(),
+                'url' => rtrim(config('zsystem.platform_url'), '/') . '/api/v1/license/validate',
+                'api_key_configurada' => ! empty(config('zsystem.api_key')),
             ]);
 
             return null;

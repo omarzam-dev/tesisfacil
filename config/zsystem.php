@@ -8,6 +8,10 @@ return [
     // Licencia asignada a esta instalación (una por cliente/organización)
     'license_key' => env('ZSYSTEM_LICENSE_KEY'),
 
+    // API Key de la organización en ZSystem Platform (header X-API-KEY requerido
+    // por el endpoint /api/v1/license/validate)
+    'api_key' => env('ZSYSTEM_API_KEY'),
+
     // Código de este producto tal como está registrado en ZSystem Platform
     'product_code' => 'TESISFACIL',
 
