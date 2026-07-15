@@ -24,6 +24,11 @@ class RevisionApaController extends Controller
 
     public function create()
     {
+        if (! auth()->user()->puedeRevisar()) {
+            return redirect()->route('apa.index')
+                ->with('error', "Alcanzaste el límite de {$this->limiteLegible()} revisiones este mes en tu plan actual.");
+        }
+
         return view('apa.create');
     }
 
@@ -35,6 +40,11 @@ class RevisionApaController extends Controller
         ApaCitationValidator $citasValidator,
         ApaReferenceValidator $referenciasValidator
     ) {
+        if (! auth()->user()->puedeRevisar()) {
+            return redirect()->route('apa.index')
+                ->with('error', "Alcanzaste el límite de {$this->limiteLegible()} revisiones este mes en tu plan actual.");
+        }
+
         $request->validate([
             'documento' => ['required', 'file', 'mimes:docx', 'max:10240'],
             'edicion_apa' => ['required', 'in:APA6,APA7'],
@@ -55,11 +65,9 @@ class RevisionApaController extends Controller
             $rutaAbsoluta = Storage::disk('local')->path($ruta);
             $edicion = $request->edicion_apa;
 
-            // Estructura (márgenes, interlineado, fuente, encabezado)
             $metricas = $parser->extraer($rutaAbsoluta);
             $resultadoEstructura = $estructuraValidator->validar($metricas, $edicion);
 
-            // Citas y referencias
             $parrafos = $textExtractor->extraerParrafos($rutaAbsoluta);
             $textoCompleto = implode("\n", $parrafos);
 
@@ -91,5 +99,10 @@ class RevisionApaController extends Controller
         abort_unless($revision->user_id === auth()->id(), 403);
 
         return view('apa.show', compact('revision'));
+    }
+
+    protected function limiteLegible(): int
+    {
+        return auth()->user()->limiteRevisiones();
     }
 }

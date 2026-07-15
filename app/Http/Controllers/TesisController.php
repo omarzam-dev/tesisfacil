@@ -16,13 +16,9 @@ class TesisController extends Controller
 
     public function create()
     {
-        // Límite del plan: max_tesis (compartido por el middleware ValidarLicencia)
-        $limite = config('zsystem.max_tesis');
-        $actuales = Tesis::where('user_id', auth()->id())->count();
-
-        if ($limite !== null && $actuales >= (int) $limite) {
+        if (! auth()->user()->puedeCrearTesis()) {
             return redirect()->route('tesis.index')
-                ->with('error', "Alcanzaste el límite de {$limite} tesis de tu plan actual.");
+                ->with('error', "Alcanzaste el límite de {$this->limiteLegible()} tesis de tu plan actual.");
         }
 
         return view('tesis.create');
@@ -30,12 +26,9 @@ class TesisController extends Controller
 
     public function store(Request $request)
     {
-        $limite = config('zsystem.max_tesis');
-        $actuales = Tesis::where('user_id', auth()->id())->count();
-
-        if ($limite !== null && $actuales >= (int) $limite) {
+        if (! auth()->user()->puedeCrearTesis()) {
             return redirect()->route('tesis.index')
-                ->with('error', "Alcanzaste el límite de {$limite} tesis de tu plan actual.");
+                ->with('error', "Alcanzaste el límite de {$this->limiteLegible()} tesis de tu plan actual.");
         }
 
         $data = $request->validate([
@@ -50,7 +43,6 @@ class TesisController extends Controller
             'estado' => 'en_progreso',
         ]);
 
-        // Estructura de capítulos por defecto, típica de una tesis en Perú
         $capitulosPorDefecto = [
             'Capítulo I: Planteamiento del problema',
             'Capítulo II: Marco teórico',
@@ -77,5 +69,57 @@ class TesisController extends Controller
         $tesis->load('capitulos.versiones');
 
         return view('tesis.show', compact('tesis'));
+    }
+
+    public function descargarCompleta(Tesis $tesis, \App\Services\DocxMergerService $merger)
+    {
+        abort_unless($tesis->user_id === auth()->id(), 403);
+
+        $capitulos = $tesis->capitulos()
+            ->with('versiones')
+            ->get()
+            ->map(function ($capitulo) {
+                $ultima = $capitulo->versiones->first();
+
+                if (! $ultima) {
+                    return null;
+                }
+
+                return [
+                    'nombre' => $capitulo->nombre,
+                    'ruta_absoluta' => \Storage::disk('local')->path($ultima->ruta_archivo),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+
+        if (empty($capitulos)) {
+            return back()->with('error', 'Ningún capítulo tiene un archivo subido todavía.');
+        }
+
+        $nombreSalida = \Illuminate\Support\Str::slug($tesis->titulo) . '-completa.docx';
+        $rutaTemporal = storage_path('app/temp/' . uniqid('tesis_') . '.docx');
+
+        if (! is_dir(dirname($rutaTemporal))) {
+            mkdir(dirname($rutaTemporal), 0755, true);
+        }
+
+        try {
+            $resultado = $merger->combinar($capitulos, $rutaTemporal);
+        } catch (\Throwable $e) {
+            return back()->with('error', 'No se pudo combinar los capítulos: ' . $e->getMessage());
+        }
+
+        if (! empty($resultado['omitidos'])) {
+            session()->flash('warning', 'Se omitieron estos capítulos por error al combinarlos: ' . implode(', ', $resultado['omitidos']));
+        }
+
+        return response()->download($resultado['ruta'], $nombreSalida)->deleteFileAfterSend(true);
+    }
+
+    protected function limiteLegible(): int
+    {
+        return auth()->user()->limiteTesis();
     }
 }

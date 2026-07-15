@@ -40,6 +40,19 @@ class CapituloController extends Controller
         return back();
     }
 
+    public function actualizarNombre(Request $request, Capitulo $capitulo)
+    {
+        abort_unless($capitulo->tesis->user_id === auth()->id(), 403);
+
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+        ]);
+
+        $capitulo->update(['nombre' => $data['nombre']]);
+
+        return back()->with('status', 'Nombre del capítulo actualizado.');
+    }
+
     public function destroy(Capitulo $capitulo)
     {
         abort_unless($capitulo->tesis->user_id === auth()->id(), 403);

@@ -1,3 +1,87 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* ---------- Botones ---------- */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-teal text-white
+               font-semibold text-sm rounded-lg shadow-sm
+               hover:bg-[#0d746b] hover:shadow-md hover:-translate-y-0.5
+               active:translate-y-0 transition-all duration-150
+               focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2
+               disabled:opacity-50 disabled:pointer-events-none;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-gray-700
+               font-semibold text-sm rounded-lg border border-gray-300 shadow-sm
+               hover:border-teal hover:text-teal hover:shadow-md hover:-translate-y-0.5
+               active:translate-y-0 transition-all duration-150
+               focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2
+               disabled:opacity-50 disabled:pointer-events-none;
+    }
+
+    .btn-danger {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-rosa text-white
+               font-semibold text-sm rounded-lg shadow-sm
+               hover:bg-[#c93159] hover:shadow-md hover:-translate-y-0.5
+               active:translate-y-0 transition-all duration-150
+               focus:outline-none focus:ring-2 focus:ring-rosa focus:ring-offset-2
+               disabled:opacity-50 disabled:pointer-events-none;
+    }
+
+    .btn-sm {
+        @apply px-3 py-1.5 text-xs;
+    }
+
+    .btn-ghost-danger {
+        @apply text-rosa text-xs font-semibold hover:underline transition;
+    }
+
+    .btn-ghost-teal {
+        @apply text-teal text-xs font-semibold hover:underline transition;
+    }
+
+    /* ---------- Tarjetas ---------- */
+    .card {
+        @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6
+               transition-shadow duration-150;
+    }
+
+    .card-hover {
+        @apply hover:shadow-lg hover:border-teal/30 cursor-pointer;
+    }
+
+    .card-compact {
+        @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+    }
+
+    /* ---------- Badges ---------- */
+    .badge {
+        @apply inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full;
+    }
+
+    .badge-verde { @apply bg-verde/10 text-verde; }
+    .badge-rosa { @apply bg-rosa/10 text-rosa; }
+    .badge-naranja { @apply bg-naranja/10 text-naranja; }
+    .badge-teal { @apply bg-teal/10 text-teal; }
+    .badge-gris { @apply bg-gray-100 text-gray-500; }
+
+    /* ---------- Inputs ---------- */
+    .input-field {
+        @apply block w-full border-gray-300 rounded-lg shadow-sm text-sm
+               focus:border-teal focus:ring-2 focus:ring-teal/40 transition;
+    }
+
+    /* ---------- Encabezados de sección ---------- */
+    .section-heading {
+        @apply font-heading text-sm uppercase tracking-wide text-gray-400 mb-3;
+    }
+
+    /* ---------- Alertas ---------- */
+    .alert-success { @apply p-4 bg-verde/10 text-verde rounded-xl text-sm font-medium border border-verde/20; }
+    .alert-error { @apply p-4 bg-rosa/10 text-rosa rounded-xl text-sm font-medium border border-rosa/20; }
+    .alert-warning { @apply p-4 bg-naranja/10 text-naranja rounded-xl text-sm font-medium border border-naranja/20; }
+    .alert-info { @apply p-4 bg-gray-50 text-gray-500 rounded-xl text-xs border border-gray-100; }
+}
