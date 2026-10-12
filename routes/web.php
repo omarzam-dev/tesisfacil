@@ -11,7 +11,7 @@ use App\Models\Plan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $plans = Plan::orderBy('price')->get();
+    $plans = Plan::visibles()->get();
 
     return view('welcome', compact('plans'));
 })->name('home');
@@ -68,6 +68,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/payments/{proof}/reject', [AdminController::class, 'reject'])->name('payments.reject');
 
     Route::get('/plans', [AdminController::class, 'plans'])->name('plans');
+    Route::post('/plans', [AdminController::class, 'storePlan'])->name('plans.store');
     Route::put('/plans/{plan}', [AdminController::class, 'updatePlan'])->name('plans.update');
 
     Route::get('/payment-methods', [AdminController::class, 'paymentMethods'])->name('payment-methods');

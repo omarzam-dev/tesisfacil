@@ -9,14 +9,20 @@
             <div class="alert-success mb-5">{{ session('success') }}</div>
         @endif
 
+        @php
+            // Solo planes visibles, en el orden definido en el panel de administración
+            $planesVisibles = $plans->where('activo', true)->sortBy([['orden', 'asc'], ['price', 'asc']]);
+        @endphp
+
         <div class="grid sm:grid-cols-2 gap-5">
-            @foreach ($plans as $plan)
-                <div class="card {{ $loop->first ? 'ring-2 ring-teal' : '' }} relative">
-                    @if ($loop->first)
+            @foreach ($planesVisibles as $plan)
+                <div class="card {{ $plan->destacado ? 'ring-2 ring-teal' : '' }} relative">
+                    @if ($plan->destacado)
                         <span class="badge badge-teal absolute -top-3 left-6">⭐ Recomendado</span>
                     @endif
                     <p class="font-heading text-lg text-gray-800">{{ $plan->name }}</p>
-                    <p class="text-4xl font-heading text-teal mt-2">S/ {{ number_format($plan->price, 0) }}<span class="text-sm text-gray-400 font-sans font-normal"> /mes</span></p>
+                    <p class="text-4xl font-heading text-teal mt-2">S/ {{ number_format($plan->price, 0) }}<span class="text-sm text-gray-400 font-sans font-normal"> {{ $plan->periodoTexto() }}</span></p>
+                    <p class="text-xs text-gray-400 mt-1">{{ $plan->notaPago() }}</p>
                     <ul class="mt-5 space-y-2 text-sm text-gray-600">
                         <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>Hasta {{ $plan->max_tesis }} tesis</li>
                         <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>{{ $plan->max_revisiones }} revisiones APA / mes</li>

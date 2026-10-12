@@ -312,13 +312,13 @@
             </a>
         </div>
         @foreach ($plans as $plan)
-            <div class="plan-card {{ $loop->first ? 'featured' : '' }}">
-                @if ($loop->first)
+            <div class="plan-card {{ $plan->destacado ? 'featured' : '' }}">
+                @if ($plan->destacado)
                     <div class="plan-badge">⭐ Recomendado</div>
                 @endif
                 <div class="plan-name">{{ $plan->name }}</div>
-                <div class="plan-price">S/ {{ number_format($plan->price, 0) }} <span>/mes</span></div>
-                <p class="plan-trial">Pago vía Yape o BCP</p>
+                <div class="plan-price">S/ {{ number_format($plan->price, 0) }} <span>{{ $plan->periodoTexto() }}</span></div>
+                <p class="plan-trial">{{ $plan->notaPago() }}</p>
                 <ul class="plan-features">
                     <li>Hasta {{ $plan->max_tesis }} tesis</li>
                     <li>{{ $plan->max_revisiones }} revisiones APA / mes</li>

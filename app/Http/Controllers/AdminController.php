@@ -50,12 +50,15 @@ class AdminController extends Controller
             ->where('status', 'active')
             ->update(['status' => 'expired']);
 
+        // La duración sale del plan comprado (30 = mensual, 180 = semestral, 365 = anual)
+        $dias = $proof->plan?->duration_days ?: 30;
+
         Subscription::create([
             'user_id'   => $proof->user_id,
             'plan_id'   => $proof->plan_id,
             'status'    => 'active',
             'starts_at' => now(),
-            'ends_at'   => now()->addDays(30),
+            'ends_at'   => now()->addDays($dias),
         ]);
 
         $proof->user->update([
@@ -80,24 +83,60 @@ class AdminController extends Controller
     {
         $this->checkAdmin();
 
-        $plans = Plan::orderBy('price')->get();
+        $plans = Plan::orderBy('orden')->orderBy('price')->get();
 
         return view('admin.plans', compact('plans'));
+    }
+
+    public function storePlan(Request $request)
+    {
+        $this->checkAdmin();
+
+        $data = $this->validarPlan($request);
+
+        $plan = Plan::create($data);
+        $this->dejarUnSoloDestacado($plan);
+
+        return back()->with('success', "Plan \"{$plan->name}\" creado correctamente.");
     }
 
     public function updatePlan(Request $request, Plan $plan)
     {
         $this->checkAdmin();
 
-        $data = $request->validate([
-            'price'          => 'required|numeric|min:0',
-            'max_tesis'      => 'required|integer|min:1',
-            'max_revisiones' => 'required|integer|min:1',
-        ]);
+        $data = $this->validarPlan($request);
 
         $plan->update($data);
+        $this->dejarUnSoloDestacado($plan);
 
         return back()->with('success', "Plan \"{$plan->name}\" actualizado correctamente.");
+    }
+
+    /** Reglas comunes para crear y editar un plan. */
+    private function validarPlan(Request $request): array
+    {
+        $data = $request->validate([
+            'name'           => 'required|string|max:60',
+            'price'          => 'required|numeric|min:0',
+            'duration_days'  => 'required|integer|in:' . implode(',', array_keys(Plan::PERIODOS)),
+            'max_tesis'      => 'required|integer|min:1',
+            'max_revisiones' => 'required|integer|min:1',
+            'orden'          => 'required|integer|min:0|max:999',
+        ]);
+
+        // Las casillas no se envían cuando están desmarcadas
+        $data['destacado'] = $request->boolean('destacado');
+        $data['activo']    = $request->boolean('activo');
+
+        return $data;
+    }
+
+    /** "Recomendado" solo puede tenerlo un plan a la vez. */
+    private function dejarUnSoloDestacado(Plan $plan): void
+    {
+        if ($plan->destacado) {
+            Plan::where('id', '!=', $plan->id)->update(['destacado' => false]);
+        }
     }
 
     public function subscriptions()
