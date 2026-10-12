@@ -164,6 +164,7 @@
         .plan-price { font-size: 2.5rem; font-weight: 900; color: #12958A; margin-bottom: 0.3rem; font-family: 'Baloo 2', sans-serif; }
         .plan-price span { font-size: 0.9rem; color: #999; font-weight: 400; font-family: 'Inter', sans-serif; }
         .plan-trial { font-size: 0.8rem; color: #999; margin-bottom: 1.5rem; }
+        .plan-ahorro { display: inline-block; background: #E8F7EE; color: #1F8A4C; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.4rem; }
         .plan-features { list-style: none; margin-bottom: 2rem; }
         .plan-features li { font-size: 0.875rem; color: #666; padding: 0.4rem 0; border-bottom: 1px solid #f0f0f0; }
         .plan-features li::before { content: '✓ '; color: #12958A; font-weight: 700; }
@@ -318,6 +319,9 @@
                 @endif
                 <div class="plan-name">{{ $plan->name }}</div>
                 <div class="plan-price">S/ {{ number_format($plan->price, 0) }} <span>{{ $plan->periodoTexto() }}</span></div>
+                @if ($ahorro = $plan->ahorro($plans))
+                    <div class="plan-ahorro">Ahorras S/ {{ number_format($ahorro, 0) }}</div>
+                @endif
                 <p class="plan-trial">{{ $plan->notaPago() }}</p>
                 <ul class="plan-features">
                     <li>Hasta {{ $plan->max_tesis }} tesis</li>
@@ -325,7 +329,7 @@
                     <li>Control de versiones</li>
                 </ul>
                 <a href="{{ route('register') }}" class="btn-primary" style="display:block;text-align:center;padding:0.75rem;">
-                    Elegir {{ $plan->name }}
+                    Elegir plan
                 </a>
             </div>
         @endforeach

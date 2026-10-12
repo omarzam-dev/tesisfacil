@@ -22,6 +22,9 @@
                     @endif
                     <p class="font-heading text-lg text-gray-800">{{ $plan->name }}</p>
                     <p class="text-4xl font-heading text-teal mt-2">S/ {{ number_format($plan->price, 0) }}<span class="text-sm text-gray-400 font-sans font-normal"> {{ $plan->periodoTexto() }}</span></p>
+                    @if ($ahorro = $plan->ahorro($planesVisibles))
+                        <span class="badge badge-verde mt-2 inline-block">Ahorras S/ {{ number_format($ahorro, 0) }}</span>
+                    @endif
                     <p class="text-xs text-gray-400 mt-1">{{ $plan->notaPago() }}</p>
                     <ul class="mt-5 space-y-2 text-sm text-gray-600">
                         <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>Hasta {{ $plan->max_tesis }} tesis</li>
@@ -29,7 +32,7 @@
                         <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>Control de versiones</li>
                     </ul>
                     <a href="{{ route('subscription.checkout', $plan) }}" class="btn-primary w-full justify-center mt-6">
-                        Elegir {{ $plan->name }}
+                        Elegir plan
                     </a>
                 </div>
             @endforeach

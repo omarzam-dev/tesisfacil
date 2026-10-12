@@ -14,6 +14,8 @@ class Plan extends Model
     protected $casts = [
         'price'         => 'decimal:2',
         'duration_days' => 'integer',
+        'max_tesis'      => 'integer',
+        'max_revisiones' => 'integer',
         'orden'         => 'integer',
         'destacado'     => 'boolean',
         'activo'        => 'boolean',
@@ -46,6 +48,35 @@ class Plan extends Model
             $this->duration_days <= 31  => '/mes',
             default                     => '/' . $this->duration_days . ' días',
         };
+    }
+
+    /**
+     * Cuánto se ahorra este plan frente a pagar su equivalente mensual.
+     * Busca en $planes un plan mensual activo con los mismos límites.
+     * Devuelve null si no es un plan largo o si no hay ahorro.
+     */
+    public function ahorro($planes): ?float
+    {
+        if ($this->duration_days <= 31) {
+            return null;
+        }
+
+        $mensual = collect($planes)->first(fn ($p) =>
+            $p->id !== $this->id
+            && $p->activo
+            && $p->duration_days <= 31
+            && $p->max_tesis === $this->max_tesis
+            && $p->max_revisiones === $this->max_revisiones
+        );
+
+        if (! $mensual) {
+            return null;
+        }
+
+        $meses  = round($this->duration_days / 30);
+        $ahorro = round((float) $mensual->price * $meses - (float) $this->price, 2);
+
+        return $ahorro > 0 ? $ahorro : null;
     }
 
     /** Nota bajo el precio: el mensual paga cada mes, los demás son pago único. */
