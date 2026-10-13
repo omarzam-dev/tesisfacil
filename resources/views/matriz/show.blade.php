@@ -17,8 +17,8 @@
         $sevTexto   = ['alta' => 'Importante', 'media' => 'A mejorar', 'baja' => 'Forma'];
         $marca = function ($valor) {
             return match ($valor) {
-                'si', true  => '<span class="text-verde font-bold" title="Corresponde">✓</span>',
-                'no', false => '<span class="text-rosa font-bold" title="No corresponde">✗</span>',
+                'si', true  => '<span class="inline-flex w-6 h-6 rounded-full bg-verde-suave text-verde items-center justify-center" title="Corresponde"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>',
+                'no', false => '<span class="inline-flex w-6 h-6 rounded-full bg-rosa-suave text-rosa items-center justify-center" title="No corresponde"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></span>',
                 default     => '<span class="text-gray-400" title="No aplica">—</span>',
             };
         };

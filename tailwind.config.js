@@ -16,10 +16,15 @@ export default {
                 heading: ['Baloo 2', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                verde: '#2FAE64',
-                rosa: '#E5426E',
-                teal: '#12958A',
-                naranja: '#E8792E',
+                // Colores de marca ZSystem + su versión pastel ("suave")
+                verde:   { DEFAULT: '#2FAE64', suave: '#E3F5EA' },
+                rosa:    { DEFAULT: '#E5426E', suave: '#FCE6EC' },
+                teal:    { DEFAULT: '#12958A', suave: '#DDF2EF' },
+                naranja: { DEFAULT: '#E8792E', suave: '#FDEDE0' },
+                celeste: { DEFAULT: '#3B8ED8', suave: '#E3EFFB' },
+                lavanda: { DEFAULT: '#7A68D6', suave: '#EDEAFB' },
+                lienzo: '#EAF1EF',   // fondo general (gris verdoso suave)
+                borde:  '#CFDDDA',   // borde de cajas y separadores
             },
         },
     },

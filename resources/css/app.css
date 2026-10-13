@@ -45,16 +45,18 @@
 
     /* ---------- Tarjetas ---------- */
     .card {
-        @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6
-               transition-shadow duration-150;
+        @apply bg-white rounded-2xl border border-borde p-6
+               shadow-[0_1px_2px_rgba(16,40,38,0.05),0_4px_12px_rgba(16,40,38,0.05)]
+               transition-all duration-150;
     }
 
     .card-hover {
-        @apply hover:shadow-lg hover:border-teal/30 cursor-pointer;
+        @apply hover:shadow-lg hover:border-teal/50 hover:-translate-y-0.5 cursor-pointer;
     }
 
     .card-compact {
-        @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+        @apply bg-white rounded-xl border border-borde p-4
+               shadow-[0_1px_2px_rgba(16,40,38,0.05)];
     }
 
     /* ---------- Badges ---------- */
@@ -76,12 +78,16 @@
 
     /* ---------- Encabezados de sección ---------- */
     .section-heading {
-        @apply font-heading text-sm uppercase tracking-wide text-gray-400 mb-3;
+        @apply flex items-center gap-2 font-heading text-sm uppercase tracking-wide text-gray-600 mb-3;
+    }
+    .section-heading::before {
+        content: '';
+        @apply inline-block w-1 h-4 rounded-full bg-teal;
     }
 
     /* ---------- Alertas ---------- */
     .alert-success { @apply p-4 bg-verde/10 text-verde rounded-xl text-sm font-medium border border-verde/20; }
     .alert-error { @apply p-4 bg-rosa/10 text-rosa rounded-xl text-sm font-medium border border-rosa/20; }
     .alert-warning { @apply p-4 bg-naranja/10 text-naranja rounded-xl text-sm font-medium border border-naranja/20; }
-    .alert-info { @apply p-4 bg-gray-50 text-gray-500 rounded-xl text-xs border border-gray-100; }
+    .alert-info { @apply p-4 bg-white text-gray-500 rounded-xl text-xs border border-borde; }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\MatrizConsistenciaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevisionApaController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SustentacionController;
 use App\Http\Controllers\TesisController;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,13 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::get('/matriz/nueva', [MatrizConsistenciaController::class, 'create'])->name('matriz.create');
     Route::post('/matriz', [MatrizConsistenciaController::class, 'store'])->middleware('throttle:10,1')->name('matriz.store');
     Route::get('/matriz/{matriz}', [MatrizConsistenciaController::class, 'show'])->name('matriz.show');
+
+    // Asistente IA: simulador de sustentación
+    Route::get('/sustentacion', [SustentacionController::class, 'index'])->name('sustentacion.index');
+    Route::get('/sustentacion/nueva', [SustentacionController::class, 'create'])->name('sustentacion.create');
+    Route::post('/sustentacion', [SustentacionController::class, 'store'])->middleware('throttle:6,1')->name('sustentacion.store');
+    Route::get('/sustentacion/{simulacion}', [SustentacionController::class, 'show'])->name('sustentacion.show');
+    Route::post('/sustentacion/{simulacion}/responder', [SustentacionController::class, 'responder'])->middleware('throttle:15,1')->name('sustentacion.responder');
 });
 
 // Rutas de suscripción (requieren login pero NO bloquean por suscripción vencida)

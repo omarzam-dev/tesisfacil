@@ -10,7 +10,7 @@
 
     <div class="py-8 px-4 sm:px-6 max-w-3xl">
         @if ($errors->any())
-            <div class="alert-danger mb-5">
+            <div class="rounded-lg border border-rosa/30 bg-rosa/10 text-rosa px-4 py-3 text-sm mb-5 space-y-1">
                 @foreach ($errors->all() as $error)
                     <p>{{ $error }}</p>
                 @endforeach

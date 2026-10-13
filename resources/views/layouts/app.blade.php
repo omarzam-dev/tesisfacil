@@ -14,13 +14,17 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-50">
+<body class="font-sans antialiased bg-lienzo">
     <div class="lg:flex min-h-screen">
         @include('layouts.sidebar')
 
         <div class="flex-1 min-w-0">
             @isset($header)
-                <header class="bg-white border-b border-gray-100">
+                <header class="bg-gradient-to-r from-teal-suave via-white to-lavanda-suave border-b border-borde">
+                    {{-- Franja de 4 colores de la marca ZSystem --}}
+                    <div class="flex h-1">
+                        <span class="flex-1 bg-verde"></span><span class="flex-1 bg-teal"></span><span class="flex-1 bg-naranja"></span><span class="flex-1 bg-rosa"></span>
+                    </div>
                     <div class="px-4 sm:px-6 py-5">
                         {{ $header }}
                     </div>

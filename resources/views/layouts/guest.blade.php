@@ -42,7 +42,7 @@
         </div>
 
         <!-- Panel derecho 30% -->
-        <div class="w-full lg:w-[30%] flex flex-col justify-center px-6 sm:px-10 py-10 bg-gray-50">
+        <div class="w-full lg:w-[30%] flex flex-col justify-center px-6 sm:px-10 py-10 bg-lienzo">
             <div class="mb-6">
                 <a href="{{ route('home') }}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-teal transition">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -56,7 +56,7 @@
                 <x-application-logo class="h-9 w-auto text-gray-800" />
             </a>
 
-            <div class="w-full bg-white shadow-sm border border-gray-100 rounded-xl p-8">
+            <div class="w-full bg-white shadow-sm border border-borde rounded-xl p-8">
                 {{ $slot }}
             </div>
         </div>

@@ -137,7 +137,8 @@ class User extends Authenticatable
 
     public function iaUsadaEsteMes(): int
     {
-        return $this->usosIa()->esteMes()->count();
+        // Solo cuentan los usos que descuentan del límite (ej.: evaluar respuestas de una simulación no descuenta)
+        return $this->usosIa()->esteMes()->where('consume_uso', true)->count();
     }
 
     public function puedeUsarIa(): bool

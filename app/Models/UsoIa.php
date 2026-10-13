@@ -8,12 +8,13 @@ class UsoIa extends Model
 {
     protected $table = 'usos_ia';
 
-    protected $fillable = ['user_id', 'tipo', 'modelo', 'tokens_entrada', 'tokens_salida', 'costo_usd'];
+    protected $fillable = ['user_id', 'tipo', 'modelo', 'tokens_entrada', 'tokens_salida', 'costo_usd', 'consume_uso'];
 
     protected $casts = [
         'tokens_entrada' => 'integer',
         'tokens_salida'  => 'integer',
         'costo_usd'      => 'float',
+        'consume_uso'    => 'boolean',
     ];
 
     public function user()
