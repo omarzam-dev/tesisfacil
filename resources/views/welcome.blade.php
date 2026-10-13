@@ -306,6 +306,7 @@
             <ul class="plan-features">
                 <li>Hasta 1 tesis</li>
                 <li>10 revisiones APA / mes</li>
+                <li>{{ config('ia.trial_usos', 3) }} usos de IA para probar</li>
                 <li>Control de versiones</li>
             </ul>
             <a href="{{ route('register') }}" class="btn-primary" style="display:block;text-align:center;padding:0.75rem;">
@@ -326,6 +327,9 @@
                 <ul class="plan-features">
                     <li>Hasta {{ $plan->max_tesis }} tesis</li>
                     <li>{{ $plan->max_revisiones }} revisiones APA / mes</li>
+                    @if ($plan->max_ia > 0)
+                        <li>{{ $plan->max_ia }} usos de IA / mes</li>
+                    @endif
                     <li>Control de versiones</li>
                 </ul>
                 <a href="{{ route('register') }}" class="btn-primary" style="display:block;text-align:center;padding:0.75rem;">

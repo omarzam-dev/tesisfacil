@@ -85,7 +85,11 @@ class AdminController extends Controller
 
         $plans = Plan::orderBy('orden')->orderBy('price')->get();
 
-        return view('admin.plans', compact('plans'));
+        // Gasto del asistente de IA en el mes actual
+        $usosMes  = \App\Models\UsoIa::esteMes()->count();
+        $gastoMes = (float) \App\Models\UsoIa::esteMes()->sum('costo_usd');
+
+        return view('admin.plans', compact('plans', 'usosMes', 'gastoMes'));
     }
 
     public function storePlan(Request $request)
@@ -121,6 +125,7 @@ class AdminController extends Controller
             'duration_days'  => 'required|integer|in:' . implode(',', array_keys(Plan::PERIODOS)),
             'max_tesis'      => 'required|integer|min:1',
             'max_revisiones' => 'required|integer|min:1',
+            'max_ia'         => 'required|integer|min:0|max:9999',
             'orden'          => 'required|integer|min:0|max:999',
         ]);
 

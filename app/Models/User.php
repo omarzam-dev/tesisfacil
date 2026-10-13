@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function hasAccess(): bool
     {
-        return $this->onTrial() || $this->subscription_status === 'active';
+        return $this->isAdmin() || $this->onTrial() || $this->subscription_status === 'active';
     }
 
     public function isAdmin(): bool
@@ -110,5 +110,38 @@ class User extends Authenticatable
     public function puedeRevisar(): bool
     {
         return $this->revisionesUsadasEsteMes() < $this->limiteRevisiones();
+    }
+
+    // -----------------------------------------------------------------
+    // Asistente de IA: usos incluidos por mes según el plan
+    // -----------------------------------------------------------------
+
+    public function usosIa()
+    {
+        return $this->hasMany(UsoIa::class);
+    }
+
+    public function limiteIa(): int
+    {
+        // Los administradores no tienen límite (para probar y dar soporte)
+        if ($this->isAdmin()) {
+            return 9999;
+        }
+
+        if ($plan = $this->activeSubscription?->plan) {
+            return (int) $plan->max_ia;
+        }
+
+        return $this->onTrial() ? (int) config('ia.trial_usos', 3) : 0;
+    }
+
+    public function iaUsadaEsteMes(): int
+    {
+        return $this->usosIa()->esteMes()->count();
+    }
+
+    public function puedeUsarIa(): bool
+    {
+        return $this->iaUsadaEsteMes() < $this->limiteIa();
     }
 }

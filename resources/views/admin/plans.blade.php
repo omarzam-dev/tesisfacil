@@ -15,6 +15,17 @@
         </div>
     @endif
 
+    <div class="card mb-6 flex flex-wrap gap-8">
+        <div>
+            <p class="text-xs text-gray-500 font-medium">Usos de IA este mes</p>
+            <p class="font-heading text-2xl text-gray-800">{{ $usosMes }}</p>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 font-medium">Gasto de IA este mes</p>
+            <p class="font-heading text-2xl text-gray-800">US$ {{ number_format($gastoMes, 2) }}</p>
+        </div>
+    </div>
+
     <div class="grid sm:grid-cols-2 gap-5">
         @foreach ($plans as $plan)
             <form method="POST" action="{{ route('admin.plans.update', $plan) }}" class="card space-y-4 {{ $plan->activo ? '' : 'opacity-60' }}">

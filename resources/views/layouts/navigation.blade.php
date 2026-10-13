@@ -24,6 +24,11 @@
                             {{ request()->routeIs('tesis.*') || request()->routeIs('capitulos.*') ? 'border-teal text-teal' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300' }}">
                         Mis tesis
                     </a>
+                    <a href="{{ route('matriz.index') }}"
+                        class="inline-flex items-center px-3 h-16 text-sm font-medium border-b-2 transition
+                            {{ request()->routeIs('matriz.*') ? 'border-teal text-teal' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300' }}">
+                        Matriz
+                    </a>
                 </div>
             </div>
 
@@ -65,6 +70,7 @@
             <a href="{{ route('dashboard') }}" class="block ps-3 pe-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard') ? 'text-teal bg-teal/5 border-l-4 border-teal' : 'text-gray-500' }}">Inicio</a>
             <a href="{{ route('apa.index') }}" class="block ps-3 pe-4 py-2 text-sm font-medium {{ request()->routeIs('apa.*') ? 'text-teal bg-teal/5 border-l-4 border-teal' : 'text-gray-500' }}">Corrector APA</a>
             <a href="{{ route('tesis.index') }}" class="block ps-3 pe-4 py-2 text-sm font-medium {{ request()->routeIs('tesis.*') ? 'text-teal bg-teal/5 border-l-4 border-teal' : 'text-gray-500' }}">Mis tesis</a>
+            <a href="{{ route('matriz.index') }}" class="block ps-3 pe-4 py-2 text-sm font-medium {{ request()->routeIs('matriz.*') ? 'text-teal bg-teal/5 border-l-4 border-teal' : 'text-gray-500' }}">Matriz de consistencia</a>
         </div>
         <div class="pt-4 pb-1 border-t border-gray-100">
             <div class="px-4"><p class="font-medium text-sm text-gray-800">{{ Auth::user()->name }}</p></div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\CapituloVersionController;
+use App\Http\Controllers\MatrizConsistenciaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevisionApaController;
 use App\Http\Controllers\SubscriptionController;
@@ -47,6 +48,12 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::post('/capitulos/{capitulo}/versiones', [CapituloVersionController::class, 'store'])->name('capitulos.version.store');
     Route::get('/capitulos/{capitulo}/versiones/{version}/descargar', [CapituloVersionController::class, 'download'])->name('capitulos.version.download');
     Route::delete('/capitulos/{capitulo}/versiones/{version}', [CapituloVersionController::class, 'destroy'])->name('capitulos.version.destroy');
+
+    // Asistente IA: revisor de matriz de consistencia
+    Route::get('/matriz', [MatrizConsistenciaController::class, 'index'])->name('matriz.index');
+    Route::get('/matriz/nueva', [MatrizConsistenciaController::class, 'create'])->name('matriz.create');
+    Route::post('/matriz', [MatrizConsistenciaController::class, 'store'])->middleware('throttle:10,1')->name('matriz.store');
+    Route::get('/matriz/{matriz}', [MatrizConsistenciaController::class, 'show'])->name('matriz.show');
 });
 
 // Rutas de suscripción (requieren login pero NO bloquean por suscripción vencida)

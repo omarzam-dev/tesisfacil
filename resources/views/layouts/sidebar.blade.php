@@ -25,10 +25,12 @@
                     ['route' => 'dashboard', 'match' => 'dashboard', 'label' => 'Inicio', 'icon' => 'home'],
                     ['route' => 'apa.index', 'match' => 'apa.*', 'label' => 'Corrector APA', 'icon' => 'document'],
                     ['route' => 'tesis.index', 'match' => 'tesis.*|capitulos.*', 'label' => 'Mis tesis', 'icon' => 'book'],
+                    ['route' => 'matriz.index', 'match' => 'matriz.*', 'label' => 'Matriz de consistencia', 'icon' => 'matriz', 'chip' => 'IA'],
                 ];
                 $icons = [
                     'home' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
                     'document' => 'M9 12h6m-6 4h6M9 8h1m5 12H7a2 2 0 01-2-2V6a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V18a2 2 0 01-2 2z',
+                    'matriz' => 'M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
                     'book' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
                 ];
             @endphp
@@ -43,7 +45,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$item['icon']] }}" />
                         </svg>
                     </span>
-                    {{ $item['label'] }}
+                    <span class="flex-1">{{ $item['label'] }}</span>
+                    @isset($item['chip'])
+                        <span class="text-[10px] font-semibold uppercase tracking-wide bg-teal/10 text-teal px-1.5 py-0.5 rounded">{{ $item['chip'] }}</span>
+                    @endisset
                 </a>
             @endforeach
 

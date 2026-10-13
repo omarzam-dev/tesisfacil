@@ -34,6 +34,21 @@
                 </p>
             </a>
 
+            <a href="{{ route('matriz.index') }}" class="card card-hover group relative">
+                <span class="absolute top-5 right-5 badge badge-teal">IA</span>
+                <div class="w-12 h-12 rounded-xl bg-naranja/10 flex items-center justify-center mb-4 group-hover:bg-naranja group-hover:scale-105 transition-all">
+                    <svg class="w-6 h-6 text-naranja group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <p class="font-heading text-gray-800 text-lg group-hover:text-naranja transition">Matriz de consistencia</p>
+                <p class="text-sm text-gray-500 mt-1">La IA revisa que tus problemas, objetivos e hipótesis calcen entre sí.</p>
+                <p class="text-xs font-semibold text-naranja mt-4 flex items-center gap-1">
+                    Revisar mi matriz
+                    <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                </p>
+            </a>
+
             <div class="card opacity-60 relative">
                 <span class="absolute top-5 right-5 badge badge-gris">Próximo</span>
                 <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4">

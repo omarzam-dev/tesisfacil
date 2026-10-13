@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     protected $fillable = [
-        'name', 'price', 'duration_days', 'max_tesis', 'max_revisiones',
+        'name', 'price', 'duration_days', 'max_tesis', 'max_revisiones', 'max_ia',
         'orden', 'destacado', 'activo',
     ];
 
@@ -16,6 +16,7 @@ class Plan extends Model
         'duration_days' => 'integer',
         'max_tesis'      => 'integer',
         'max_revisiones' => 'integer',
+        'max_ia'         => 'integer',
         'orden'         => 'integer',
         'destacado'     => 'boolean',
         'activo'        => 'boolean',

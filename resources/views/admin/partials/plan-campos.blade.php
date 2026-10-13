@@ -34,6 +34,11 @@
     </div>
 </div>
 
+<div>
+    <label class="block text-xs font-semibold text-gray-500 mb-1">Usos de IA / mes (0 = sin IA)</label>
+    <input type="number" min="0" name="max_ia" value="{{ $plan?->max_ia ?? 20 }}" required class="input-field">
+</div>
+
 <div class="grid grid-cols-2 gap-3 items-end">
     <div>
         <label class="block text-xs font-semibold text-gray-500 mb-1">Orden en la web</label>
