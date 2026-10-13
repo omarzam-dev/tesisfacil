@@ -2,6 +2,12 @@
     <x-slot name="header">
         <h2 class="font-heading text-2xl text-gray-800">Resultado</h2>
         <p class="text-sm text-gray-500 mt-1">{{ $revision->nombre_archivo }}</p>
+        <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="badge badge-teal">{{ $revision->normaNombre() }}</span>
+            @if ($revision->perfil_nombre)
+                <span class="badge bg-lavanda-suave text-lavanda">Formato: {{ $revision->perfil_nombre }}</span>
+            @endif
+        </div>
     </x-slot>
 
     <div class="py-8 max-w-2xl mx-auto px-4">

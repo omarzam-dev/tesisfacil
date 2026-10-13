@@ -28,7 +28,7 @@
                     <p class="text-xs text-gray-400 mt-1">{{ $plan->notaPago() }}</p>
                     <ul class="mt-5 space-y-2 text-sm text-gray-600">
                         <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>Hasta {{ $plan->max_tesis }} tesis</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>{{ $plan->max_revisiones }} revisiones APA / mes</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>{{ $plan->max_revisiones }} revisiones APA / ISO al mes</li>
                         @if ($plan->max_ia > 0)
                             <li class="flex items-center gap-2"><svg class="w-4 h-4 text-verde shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>{{ $plan->max_ia }} usos de IA / mes</li>
                         @endif

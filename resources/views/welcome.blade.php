@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-    <title>TesisFácil — Corrige tu tesis en formato APA</title>
+    <title>TesisFácil — Corrige tu tesis en APA o ISO 690</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Baloo+2:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -214,7 +214,7 @@
     <div>
         <div class="hero-badge"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.42a12.08 12.08 0 01.67 6.48A11.95 11.95 0 0012 20.06a11.95 11.95 0 00-6.83-2.99 12.08 12.08 0 01.66-6.48L12 14zm-4 6v-7.5l4-2.22"/></svg> Hecho para tesistas peruanos</div>
         <h1>Escribe tu tesis.<br><span>Sin errores de formato.</span></h1>
-        <p>TesisFácil revisa automáticamente la estructura, las citas y las referencias de tu documento en formato APA, y organiza el avance de tu tesis por capítulos con control de versiones.</p>
+        <p>TesisFácil revisa automáticamente la estructura, las citas y las referencias de tu documento en APA o ISO 690, y organiza el avance de tu tesis por capítulos con control de versiones.</p>
         <div class="hero-buttons">
             <a href="{{ route('register') }}" class="btn-primary btn-large">Crear cuenta gratis</a>
             <a href="#plans" class="btn-secondary btn-large">Ver planes</a>
@@ -250,7 +250,7 @@
 
 <!-- STATS -->
 <div class="stats">
-    <div class="stat-item"><div class="stat-number">APA 6/7</div><div class="stat-label">Ambas ediciones soportadas</div></div>
+    <div class="stat-item"><div class="stat-number">APA e ISO</div><div class="stat-label">APA 6, APA 7 e ISO 690</div></div>
     <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Capítulos estándar automáticos</div></div>
     <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">Versiones por capítulo</div></div>
     <div class="stat-item"><div class="stat-number">24h</div><div class="stat-label">Activación de cuenta</div></div>
@@ -264,7 +264,7 @@
         <div class="feature-card c-celeste">
             <div class="feature-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm4 0v14M4 9h16"/></svg></div>
             <h3>Estructura del documento</h3>
-            <p>Detecta márgenes, interlineado y fuente incorrectos comparando tu .docx contra las reglas oficiales APA.</p>
+            <p>Detecta márgenes, interlineado y fuente incorrectos comparando tu .docx contra APA o el formato de tu universidad.</p>
         </div>
         <div class="feature-card c-teal">
             <div class="feature-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></div>
@@ -309,7 +309,7 @@
     <img src="{{ asset('images/estudiantes-grupo.jpg') }}" alt="Grupo de tesistas trabajando juntos">
     <div>
         <h2>Hecho por y para tesistas peruanos</h2>
-        <p>Sabemos lo que es pelear con las normas APA a último minuto...</p>
+        <p>Sabemos lo que es pelear con las normas APA o ISO a último minuto...</p>
     </div>
 </section>
 
@@ -324,7 +324,7 @@
             <p class="plan-trial">Sin tarjeta de crédito</p>
             <ul class="plan-features">
                 <li>Hasta 1 tesis</li>
-                <li>10 revisiones APA / mes</li>
+                <li>10 revisiones APA / ISO al mes</li>
                 <li>{{ config('ia.trial_usos', 3) }} usos de IA para probar</li>
                 <li>Control de versiones</li>
             </ul>
@@ -345,7 +345,7 @@
                 <p class="plan-trial">{{ $plan->notaPago() }}</p>
                 <ul class="plan-features">
                     <li>Hasta {{ $plan->max_tesis }} tesis</li>
-                    <li>{{ $plan->max_revisiones }} revisiones APA / mes</li>
+                    <li>{{ $plan->max_revisiones }} revisiones APA / ISO al mes</li>
                     @if ($plan->max_ia > 0)
                         <li>{{ $plan->max_ia }} usos de IA / mes</li>
                     @endif

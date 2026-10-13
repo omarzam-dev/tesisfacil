@@ -17,6 +17,8 @@ class RevisionApa extends Model
         'nombre_archivo',
         'ruta_archivo',
         'edicion_apa',
+        'perfil_formato_id',
+        'perfil_nombre',
         'estado',
         'resultado_estructura',
         'resultado_citas',
@@ -33,5 +35,21 @@ class RevisionApa extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function perfilFormato(): BelongsTo
+    {
+        return $this->belongsTo(PerfilFormato::class);
+    }
+
+    /** "APA 7ma edición", "ISO 690 numérico"... (edicion_apa guarda el código de la norma) */
+    public function normaNombre(): string
+    {
+        return config("apa_rules.{$this->edicion_apa}.nombre", $this->edicion_apa);
+    }
+
+    public function esIso(): bool
+    {
+        return config("apa_rules.{$this->edicion_apa}.tipo") === 'iso';
     }
 }

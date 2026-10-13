@@ -1,38 +1,73 @@
+{{-- Resultado de una parte de la revisión (estructura, citas o referencias) --}}
 @php
-    $colorResumen = $resultado['resumen']['aprobado'] ? 'text-verde' : 'text-rosa';
+    $checks = collect($resultado['checks'] ?? []);
+    $problemas = $checks->filter(fn ($c) => ($c['nivel'] ?? 'ok') !== 'ok')
+        ->sortBy(fn ($c) => $c['nivel'] === 'error' ? 0 : 1)
+        ->values();
+    $correctos = $checks->filter(fn ($c) => ($c['nivel'] ?? 'ok') === 'ok')->values();
+    $errores = $resultado['resumen']['errores'] ?? 0;
+    $advertencias = $resultado['resumen']['advertencias'] ?? 0;
 @endphp
 
-<div class="card-compact mb-3">
-    <div class="flex items-center justify-between">
-        <p class="font-heading text-gray-800">{{ $titulo }}</p>
-        <div class="text-right text-xs">
-            <span class="font-semibold {{ $resultado['resumen']['errores'] > 0 ? 'text-rosa' : 'text-gray-400' }}">{{ $resultado['resumen']['errores'] }} errores</span>
-            <span class="text-gray-300 mx-1">·</span>
-            <span class="font-semibold {{ $resultado['resumen']['advertencias'] > 0 ? 'text-naranja' : 'text-gray-400' }}">{{ $resultado['resumen']['advertencias'] }} advertencias</span>
+<div class="card mb-6 space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+        <p class="font-semibold text-gray-800">{{ $titulo }}</p>
+        <div class="flex flex-wrap gap-1.5">
+            @if ($errores)
+                <span class="badge badge-rosa">{{ $errores }} {{ $errores === 1 ? 'error' : 'errores' }}</span>
+            @endif
+            @if ($advertencias)
+                <span class="badge badge-naranja">{{ $advertencias }} {{ $advertencias === 1 ? 'advertencia' : 'advertencias' }}</span>
+            @endif
+            @if (! $errores && ! $advertencias)
+                <span class="badge badge-verde">Todo correcto</span>
+            @endif
         </div>
     </div>
-</div>
 
-<div class="space-y-2.5 mb-8">
-    @forelse ($resultado['checks'] as $check)
-        @php
-            $estilo = match($check['nivel']) {
-                'ok' => ['border' => 'border-verde', 'bg' => 'bg-verde/5', 'icon' => 'text-verde', 'path' => 'M5 13l4 4L19 7'],
-                'advertencia' => ['border' => 'border-naranja', 'bg' => 'bg-naranja/5', 'icon' => 'text-naranja', 'path' => 'M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z'],
-                default => ['border' => 'border-rosa', 'bg' => 'bg-rosa/5', 'icon' => 'text-rosa', 'path' => 'M6 18L18 6M6 6l12 12'],
-            };
-            $etiqueta = $check['nombre'] ?? $check['cita'] ?? '';
-        @endphp
-        <div class="border-l-4 {{ $estilo['border'] }} {{ $estilo['bg'] }} rounded-lg p-4 flex items-start gap-3">
-            <svg class="w-4 h-4 {{ $estilo['icon'] }} shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $estilo['path'] }}" />
-            </svg>
-            <div>
-                <p class="font-semibold text-gray-800 text-sm">{{ $etiqueta }}</p>
-                <p class="text-sm text-gray-600 mt-0.5">{{ $check['mensaje'] }}</p>
-            </div>
-        </div>
-    @empty
-        <p class="text-sm text-gray-400 px-1">Sin hallazgos en esta sección.</p>
-    @endforelse
+    @if ($problemas->isNotEmpty())
+        <ul class="space-y-2">
+            @foreach ($problemas as $c)
+                @php $esError = $c['nivel'] === 'error'; @endphp
+                <li class="flex gap-3 rounded-xl border p-3 text-sm {{ $esError ? 'border-rosa/20 bg-rosa-suave/60' : 'border-naranja/20 bg-naranja-suave/60' }}">
+                    <span class="mt-0.5 w-6 h-6 rounded-full flex items-center justify-center shrink-0 {{ $esError ? 'bg-rosa text-white' : 'bg-naranja text-white' }}">
+                        @if ($esError)
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        @else
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v5m0 3h.01" /></svg>
+                        @endif
+                    </span>
+                    <div class="min-w-0 text-gray-700">
+                        @if (! empty($c['nombre']))
+                            <p class="font-semibold text-gray-800">{{ $c['nombre'] }}</p>
+                        @endif
+                        <p class="break-words">{{ $c['mensaje'] }}</p>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    @endif
+
+    @if ($correctos->isNotEmpty())
+        <details class="group" @if ($problemas->isEmpty()) open @endif>
+            <summary class="cursor-pointer select-none text-sm font-medium text-verde hover:underline">
+                {{ $correctos->count() }} {{ $correctos->count() === 1 ? 'punto correcto' : 'puntos correctos' }}
+            </summary>
+            <ul class="mt-3 space-y-2">
+                @foreach ($correctos as $c)
+                    <li class="flex gap-3 text-sm text-gray-600">
+                        <span class="mt-0.5 w-5 h-5 rounded-full bg-verde-suave text-verde flex items-center justify-center shrink-0">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        </span>
+                        <p class="min-w-0 break-words">
+                            @if (! empty($c['nombre']))
+                                <span class="font-semibold text-gray-700">{{ $c['nombre'] }}:</span>
+                            @endif
+                            {{ $c['mensaje'] }}
+                        </p>
+                    </li>
+                @endforeach
+            </ul>
+        </details>
+    @endif
 </div>

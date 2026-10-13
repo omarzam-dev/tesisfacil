@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-heading text-2xl text-gray-800">Corrector APA</h2>
+                <h2 class="font-heading text-2xl text-gray-800">Corrector APA / ISO</h2>
                 <p class="text-sm text-gray-500 mt-1">Historial de tus revisiones</p>
             </div>
             <a href="{{ route('apa.create') }}" class="btn-primary">
@@ -13,7 +13,7 @@
     </x-slot>
 
     <div class="py-8 max-w-3xl mx-auto px-4">
-        <div class="card !p-0 divide-y divide-gray-100 overflow-hidden">
+        <div class="card !p-0 divide-y divide-borde overflow-hidden">
             @forelse ($revisiones as $revision)
                 @php
                     $badge = match($revision->estado) {
@@ -24,7 +24,7 @@
                         default => ['label' => 'Procesando', 'class' => 'badge-naranja'],
                     };
                 @endphp
-                <a href="{{ route('apa.show', $revision) }}" class="flex items-center justify-between p-5 hover:bg-gray-50 transition">
+                <a href="{{ route('apa.show', $revision) }}" class="flex items-center justify-between p-5 hover:bg-celeste-suave/40 transition">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-lg bg-teal/10 flex items-center justify-center shrink-0">
                             <svg class="w-4 h-4 text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
@@ -33,7 +33,7 @@
                         </div>
                         <div>
                             <p class="font-semibold text-gray-800 text-sm">{{ $revision->nombre_archivo }}</p>
-                            <p class="text-xs text-gray-500">{{ $revision->edicion_apa }} · {{ $revision->created_at->diffForHumans() }}</p>
+                            <p class="text-xs text-gray-500">{{ $revision->normaNombre() }}{{ $revision->perfil_nombre ? ' · ' . $revision->perfil_nombre : '' }} · {{ $revision->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
                     <span class="badge {{ $badge['class'] }}">{{ $badge['label'] }}</span>

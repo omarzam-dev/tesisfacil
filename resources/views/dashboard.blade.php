@@ -8,8 +8,8 @@
         // Cada tarjeta con su color pastel (clases escritas completas para Tailwind)
         $tarjetas = [
             [
-                'ruta' => 'apa.index', 'titulo' => 'Corrector APA', 'accion' => 'Empezar',
-                'texto' => 'Revisa estructura, citas y referencias de tu documento.',
+                'ruta' => 'apa.index', 'titulo' => 'Corrector APA / ISO', 'accion' => 'Empezar',
+                'texto' => 'Revisa formato, citas y referencias en APA o ISO 690.',
                 'caja' => 'bg-celeste-suave border-celeste/20 hover:border-celeste/50',
                 'icono' => 'text-celeste group-hover:bg-celeste group-hover:text-white', 'color' => 'text-celeste',
                 'svg' => 'M9 12h6m-6 4h6M9 8h1m5 12H7a2 2 0 01-2-2V6a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V18a2 2 0 01-2 2z',

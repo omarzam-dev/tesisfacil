@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\CapituloVersionController;
 use App\Http\Controllers\MatrizConsistenciaController;
+use App\Http\Controllers\PerfilFormatoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevisionApaController;
 use App\Http\Controllers\SubscriptionController;
@@ -93,6 +94,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('subscriptions');
     Route::patch('/subscriptions/{subscription}/cancel', [AdminController::class, 'cancelSubscription'])->name('subscriptions.cancel');
     Route::delete('/subscriptions/{subscription}', [AdminController::class, 'destroySubscription'])->name('subscriptions.destroy');
+
+    // Formato de página por universidad (para ISO 690 y APA con formato propio)
+    Route::get('/perfiles-formato', [PerfilFormatoController::class, 'index'])->name('perfiles.index');
+    Route::post('/perfiles-formato', [PerfilFormatoController::class, 'store'])->name('perfiles.store');
+    Route::put('/perfiles-formato/{perfil}', [PerfilFormatoController::class, 'update'])->name('perfiles.update');
 
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::patch('/users/{user}/toggle-admin', [AdminController::class, 'toggleAdmin'])->name('users.toggle-admin');
